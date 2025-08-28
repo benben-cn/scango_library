@@ -15,11 +15,6 @@
 #include "cJSON.h"
 #include "dcf_err.h"
 
-#ifdef __APPLE__
-#define strcpy_s(dest, size, src) strlcpy(dest, src, size)
-#define strcat_s(dest, size, src) strlcat(dest, src, size)
-#endif
-
 extern pthread_mutex_t mut_callback;
 extern onLogout gonLogout;
 extern onDatabaseIdxRecv gonDatabaseIdxRecv;
@@ -428,8 +423,8 @@ DWORD smartdog_scango_dcframe_BSClient_sendRawMessage(
     WORD srcPathLen = strlen(srcPath);  //sizeof(srcPath)求出的是指针的大小，8个字节（64位）
     srcPathLen += 4; //不是3
     char* zipPath = new char[srcPathLen];
-    strcpy_s(zipPath, srcPathLen, srcPath);
-    strcat_s(zipPath, srcPathLen, ".gz");
+    strlcpy(zipPath, srcPath, srcPathLen);
+    strlcat(zipPath, ".gz", srcPathLen);
 
     // 压缩源文件
     DWORD dwRet = dcf_zlib_compress_ftof(srcPath, zipPath);
