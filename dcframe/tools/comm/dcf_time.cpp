@@ -15,8 +15,9 @@ clock_t dcf_time_add_num(clock_t &ctime1,DWORD num);
 
 // 毫秒和clock的转换(一般等于1)
 // windows:clock表示毫秒 #define CLOCKS_PER_SEC ((clock_t)1000)
-// linux:clock表示微妙 #define CLOCKS_PER_SEC ((clock_t)1000000)
-const long CLOCKS_PER_MS = (CLOCKS_PER_SEC/1000);
+// linux/macOS:clock表示微妙 #define CLOCKS_PER_SEC ((clock_t)1000000)
+//const long CLOCKS_PER_MS = (CLOCKS_PER_SEC/1000);
+const long CLOCKS_PER_MS = 1000; //no matching conversion for C-style cast from 'int' to 'struct timespec'
 
 clock_t dcf_time_get_cur_clock()
 {
