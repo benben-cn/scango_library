@@ -15,6 +15,11 @@
 #include "cJSON.h"
 #include "dcf_err.h"
 
+#ifdef __APPLE__
+#define strcpy_s(dest, size, src) strlcpy(dest, src, size)
+#define strcat_s(dest, size, src) strlcat(dest, src, size)
+#endif
+
 extern pthread_mutex_t mut_callback;
 extern onLogout gonLogout;
 extern onDatabaseIdxRecv gonDatabaseIdxRecv;
