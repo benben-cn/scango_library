@@ -4,11 +4,12 @@
 #define SCANGODLL_d
 
 //宏定义导出
-#ifdef SCANGODLL__//如果没有定义DLLH 就定义 DLLH __declspec(dllexport)
-#define SCANGODLL __declspec(dllexport)//导出
-#else
-#define SCANGODLL __declspec(dllimport)//导入
-#endif // DLLH__//如果没有定义DLLH 就定义 DLLH 
+// #ifdef SCANGODLL__//如果没有定义DLLH 就定义 DLLH __declspec(dllexport)
+// #define SCANGODLL __declspec(dllexport)//导出
+// #else
+// #define SCANGODLL __declspec(dllimport)//导入
+// #endif // DLLH__//如果没有定义DLLH 就定义 DLLH 
+#define SCANGODLL __attribute__((visibility("default")))
 
 using namespace std;
 
