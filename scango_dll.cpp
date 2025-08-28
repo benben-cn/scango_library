@@ -6,6 +6,7 @@
 #include "extern_api.h"
 #include "zhw_pdalib.h"
 #include <stdio.h>
+#include <string.h>
 //#include <unistd.h>
 
 //#include<QVector> 

@@ -16,7 +16,7 @@ using namespace std;
 
 #include<vector> 
 
-typedef unsigned long       DWORD;
+typedef unsigned int       DWORD;
 typedef unsigned short      WORD;
 
 
