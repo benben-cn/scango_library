@@ -203,7 +203,7 @@ const WORD MID_SEQ = 0xffff/2;
 CFSWndCtrl *CFSWndCtrl::GetWndCtrl(WORD wndSize)
 {
             ASSERT((((wndSize + 7)/8)*8) == wndSize);
-    WORD bytes = sizeof(CFSWndCtrl) + wndSize/8 - sizeof(m_flag_bits);
+    WORD bytes = sizeof(CFSWndCtrl) + wndSize/8 - sizeof(2);//m_flag_bits[2]的size
     CFSWndCtrl *p = (CFSWndCtrl*)dcf_mem_malloc(bytes);
     memset(p,0,bytes);
     p->m_wnd_bitsize = wndSize;
