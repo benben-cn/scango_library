@@ -59,4 +59,4 @@ find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
 # 链接到 DLL 的导入库
-target_link_libraries(your_target PRIVATE ${ZLIB_LIBRARIES})
+target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
