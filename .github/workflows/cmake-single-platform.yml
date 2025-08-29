@@ -47,13 +47,14 @@ jobs:
       run: |
         pwd
         ls -la
-        zip -r scangolib.zip ${{github.workspace}}/output
+        #zip -r scangolib.zip ${{github.workspace}}/output
+        zip -r scangolib.zip output
         ls
 
     - name: Upload Release Asset
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v1.0.0
+        tag_name: v1.0.1
         files:
           ${{ github.workspace }}/scangolib.zip
 
