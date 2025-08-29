@@ -63,7 +63,7 @@ DWORD smartdog_scango_dcframe_BSClient_init(
     // 挂接打印函数
     g_print_debugstring = my_output;
     //char chConfigPath[128] = { 0 };
-    //#if _SW_DCF_LINUX
+    //#if _SW_DCF_MACOS
     //getcwd(chConfigPath, sizeof(chConfigPath));
     //#else 
     //GetCurrentDirectoryA(sizeof(chConfigPath), chConfigPath);
