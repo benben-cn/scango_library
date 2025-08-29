@@ -54,9 +54,9 @@ add_library(SCANGO_Dll SHARED ${SOURCES})
 target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
 
+find_package(ZLIB REQUIRED)
 # 包含 DLL 的头文件目录
-#include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 # 链接到 DLL 的导入库
-#target_link_libraries(SCANGO_Dll PUBLIC pthreadVC2.lib PUBLIC zlib.lib PUBLIC ws2_32.lib)
-#target_link_libraries(SCANGO_Dll ${PROJECT_SOURCE_DIR}/lib/pthreadVC2.lib ${PROJECT_SOURCE_DIR}/lib/zlib.lib)
+target_link_libraries(your_target PRIVATE ${ZLIB_LIBRARIES})
