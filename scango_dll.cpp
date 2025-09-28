@@ -7,6 +7,9 @@
 #include "zhw_pdalib.h"
 #include <stdio.h>
 #include <string.h>
+//#include "dcf_qrcode.h"
+//#include "zhw_tools.h"
+#include "dcf_base64.h"
 //#include <unistd.h>
 
 //#include<QVector> 
@@ -511,6 +514,104 @@ DWORD smartdog_scango_dcframe_BSClient_sendRawMessage(
     //    }
     //    remove(zipPath);
     return dwRet;
+}
+
+DWORD smartdog_scango_qrcode_security_ZheDaoRandomCodeTool_convertRandomIdNew(DWORD randomId) {
+
+
+    //如果随机数大于6位
+    if (randomId > 999999) {
+        randomId = randomId & 0xF423F; //去掉高位,保留低位
+    }
+    //如果随机数小于6位
+    if (randomId < 100000) {
+        randomId = randomId | 0x20000; //改变某位,让其是6位随机数
+    }
+
+    //取前四位
+    randomId = randomId / 100;
+
+    return randomId;
+
+
+
+    //    DWORD dResult = 0;
+    //    std::stack<int> istack;
+    //    while (randomId >= 10) {
+    //        int ire = randomId % 10; // 0
+    //        int nyu = (((3 * ire * ire * ire) % 10) + 7) % 10; //7
+    //        istack.push(nyu);
+    //        randomId = randomId / 10;
+    //    }
+    //    int nyu = (((3 * randomId * randomId * randomId) % 10) + 7) % 10;
+    //    istack.push(nyu);
+    //    while (!istack.empty()) {
+    //        dResult = dResult * 10 + istack.top();
+    //        istack.pop();
+    //    }
+    //    if (dResult == 0) {
+    //        dResult = 47683;
+    //    }
+    //    return dResult;
+
+}
+
+void dcf_tools_string_decode(char* src) {
+    if (NULL == src) return;
+    int flag = -1;
+    for (int i = 0; i < strlen(src); i++)
+    {
+        *(src + i) += flag;
+        flag = -flag;
+    }
+};
+
+/* 九十进制 */
+int m_nDigital = 90;   //从ascii码中挑出90个可见字符
+const char* m_charSet = "0123456789~!@#$%^&*()_+-=[]{}|;:,./<>?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+//10进制转化成的90进制字符串
+
+//90进制转为10进制
+ULONGLONG dcf_tools_to_10(const char* srcx) {
+    ULONGLONG dst = 0L;
+    for (int i = 0; i < strlen(srcx); i++) {
+        char c = srcx[i];
+        for (int j = 0; j < m_nDigital; j++) {
+            if (c == m_charSet[j]) {
+                dst = (dst * m_nDigital) + j;
+                break;
+            }
+        }
+    }
+    return dst;
+}
+
+qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode) {
+        //新的解码规则
+        // 3.base64解码
+    BYTE decode[8] = { 0 };
+    dcf_tools_base64_decode((BYTE*)fullQRCode, decode, 8);
+
+    // 4.解密
+    char* temp2 = (char*)&decode[0];
+    temp2[7] = '\0';
+    dcf_tools_string_decode(temp2);
+
+    //5. 解压缩: 90进制转换为10进制
+    ULONGLONG id_range = dcf_tools_to_10(temp2);
+
+    // 6.得到企业id
+//    ULONGLONG random = ((id_range) & 0x7FFFF) / 2;
+//    ULONGLONG table_id = ((id_range - random * 2) >> 19) - random;
+
+    ULONGLONG random = id_range & 0xFFFFFF;
+    ULONGLONG table_id = id_range >> 24;
+
+    qrcode_decrypt_data qr_dec_data;
+    qr_dec_data.random = (DWORD)random;
+    qr_dec_data.table_id = (DWORD)table_id;
+
+    return qr_dec_data;
 }
 
 //static onLogout gonLogout = nullptr;

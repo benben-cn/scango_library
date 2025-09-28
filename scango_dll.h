@@ -19,6 +19,11 @@ using namespace std;
 typedef unsigned int       DWORD;
 typedef unsigned short      WORD;
 
+//一物一码解码函数返回结构体
+struct qrcode_decrypt_data {
+    DWORD table_id; //数据库svp_cfg_base_20170421001，bs_qr_records表id
+    DWORD random; //产码时生成的随机数
+};
 
 //回调函数----------------------------------------------------------------------------------------
 //退出登入
@@ -76,6 +81,10 @@ extern SCANGODLL bool smartdog_scango_dcframe_BSClient_sendHeartBeatPacket();
 extern SCANGODLL DWORD smartdog_scango_dcframe_BSClient_sendCMD (WORD modId_I, WORD infoType_I, WORD cmd_I, const char* marker);
 //上传文件 返回值0：发送成功，modId_I：自定义模块id，infoType_I：信息帧类型，cmd_I：各个模块的命令字定义，srcPath：文件路径，fileLen：文件大小
 extern SCANGODLL DWORD smartdog_scango_dcframe_BSClient_sendRawMessage(WORD modId_I, WORD infoType_I, WORD cmd_I, const char* srcPath, DWORD fileLen);
+//将任意长度的随机码转换为4位随机码
+extern SCANGODLL DWORD smartdog_scango_qrcode_security_ZheDaoRandomCodeTool_convertRandomIdNew(DWORD randomId);
+//8位一物一码解码
+extern SCANGODLL qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode);
 
 
 /****************************************************************
