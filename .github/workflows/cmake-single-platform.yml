@@ -54,7 +54,7 @@ jobs:
     - name: Upload Release Asset
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v1.0.1
+        tag_name: v1.0.2
         files:
           ${{ github.workspace }}/scangolib.zip
 
