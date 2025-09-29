@@ -86,7 +86,7 @@ target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
 message(STATUS "Build dir: ${CMAKE_BINARY_DIR}")
 add_custom_command(TARGET SCANGO_Dll POST_BUILD
     COMMAND xcodebuild -create-xcframework
-        -framework ${CMAKE_BINARY_DIR}/<CONFIG>-<SDK>/${FRAMEWORK_NAME}.framework
+        -framework ${CMAKE_BINARY_DIR}/<CONFIG>-<SDK>/SCANGO_Dll.framework
         -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
     COMMENT "Generating XCFramework bundle"
 )
