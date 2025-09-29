@@ -51,6 +51,7 @@ set(SOURCES
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 add_library(SCANGO_Dll SHARED ${SOURCES})
+set_target_properties(SCANGO_Dll PROPERTIES FRAMEWORK TRUE)
 target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
 
