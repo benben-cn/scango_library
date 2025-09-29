@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 3.20)
 project(Scango_Dll)
 
+# 自动检测Xcode工具链
+if(NOT CMAKE_OSX_SYSROOT)
+    execute_process(COMMAND xcodebuild -version -sdk iphoneos Path
+        OUTPUT_VARIABLE IOS_DEVICE_SDK
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    set(CMAKE_OSX_SYSROOT ${IOS_DEVICE_SDK})
+endif()
+
+# 多架构配置
+set(ARCHS arm64 x86_64 armv7)
+set(CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO)
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED YES)
+
 if(MSVC)
     # 对于MSVC编译器
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/execution-charset:utf-8>")
@@ -50,10 +63,15 @@ set(SOURCES
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
+#生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
 add_library(SCANGO_Dll SHARED ${SOURCES} scango_dll.h)
 set_target_properties(SCANGO_Dll PROPERTIES 
     FRAMEWORK TRUE
-    PUBLIC_HEADER scango_dll.h)
+    FRAMEWORK_VERSION A
+    MACOSX_FRAMEWORK_IDENTIFIER com.example.SCANGO_Dll
+    PUBLIC_HEADER scango_dll.h
+    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGO_Dll"
+)
 target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
 
@@ -63,3 +81,11 @@ include_directories(${ZLIB_INCLUDE_DIRS})
 
 # 链接到 DLL 的导入库
 target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
+
+# 生成后脚本：自动合并XCFramework
+add_custom_command(TARGET SCANGO_Dll POST_BUILD
+    COMMAND xcodebuild -create-xcframework
+        -framework $<TARGET_BUNDLE_DIR:SCANGO_Dll>
+        -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
+    COMMENT "Generating XCFramework bundle"
+)
