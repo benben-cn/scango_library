@@ -61,7 +61,7 @@ set(SOURCES
     ${CPP_d_t_comm} ${CPP_d_t_dtframe} ${CPP_d_t_encrypt} ${CPP_d_t_list} ${CPP_d_t_lock} 
     ${CPP_d_t_pkghelper} ${CPP_d_t_socket} ${CPP_d_t_sort} ${CPP_d_t_vector} ${CPP_d_t_zlib})
 
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
+#set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 #生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
 add_library(SCANGO_Dll SHARED ${SOURCES} scango_dll.h)
@@ -85,8 +85,8 @@ target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
 # 生成后脚本：自动合并XCFramework
 add_custom_command(TARGET SCANGO_Dll POST_BUILD
     COMMAND xcodebuild -create-xcframework
-        -framework build/os64/SCANGO_Dll.framework 
-        -framework build/sim64/SCANGO_Dll.framework
+        -framework build/os64/Scango_Dll.framework 
+        -framework build/sim64/Scango_Dll.framework
         -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
     COMMENT "Generating XCFramework bundle"
 )
