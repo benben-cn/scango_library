@@ -83,10 +83,10 @@ include_directories(${ZLIB_INCLUDE_DIRS})
 target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
 
 # 生成后脚本：自动合并XCFramework
+message(STATUS "Build dir: ${CMAKE_BINARY_DIR}")
 add_custom_command(TARGET SCANGO_Dll POST_BUILD
     COMMAND xcodebuild -create-xcframework
-        -framework build/os64/Scango_Dll.framework 
-        -framework build/sim64/Scango_Dll.framework
+        -framework ${CMAKE_BINARY_DIR}/<CONFIG>-<SDK>/${FRAMEWORK_NAME}.framework
         -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
     COMMENT "Generating XCFramework bundle"
 )
