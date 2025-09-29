@@ -85,7 +85,8 @@ target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
 # 生成后脚本：自动合并XCFramework
 add_custom_command(TARGET SCANGO_Dll POST_BUILD
     COMMAND xcodebuild -create-xcframework
-        -framework $<TARGET_BUNDLE_DIR:SCANGO_Dll>
+        -framework build/os64/SCANGO_Dll.framework 
+        -framework build/sim64/SCANGO_Dll.framework
         -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
     COMMENT "Generating XCFramework bundle"
 )
