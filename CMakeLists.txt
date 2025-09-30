@@ -10,9 +10,8 @@ if(NOT CMAKE_OSX_SYSROOT)
 endif()
 
 # 多架构配置
-set(ARCHS arm64 x86_64 armv7)
+set(CMAKE_OSX_ARCHITECTURES "$ENV{ARCH}" CACHE STRING "Target architectures")
 set(CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO)
-set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED YES)
 
 if(MSVC)
     # 对于MSVC编译器
@@ -83,10 +82,10 @@ include_directories(${ZLIB_INCLUDE_DIRS})
 target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
 
 # 生成后脚本：自动合并XCFramework
-message(STATUS "Build dir: $<TARGET_BUNDLE_DIR:SCANGO_Dll>")
-add_custom_command(TARGET SCANGO_Dll POST_BUILD
-    COMMAND xcodebuild -create-xcframework
-        -framework $<TARGET_BUNDLE_DIR:SCANGO_Dll>
-        -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
-    COMMENT "Generating XCFramework bundle"
-)
+# add_custom_command(TARGET SCANGO_Dll POST_BUILD
+#     COMMAND xcodebuild -create-xcframework
+#         -framework $<TARGET_BUNDLE_DIR:SCANGO_Dll>
+#         -output ${PROJECT_SOURCE_DIR}/output/SCANGO_Dll.xcframework
+#     COMMENT "Generating XCFramework bundle"
+# )
+
