@@ -9,6 +9,14 @@ if(NOT CMAKE_OSX_SYSROOT)
     set(CMAKE_OSX_SYSROOT ${IOS_DEVICE_SDK})
 endif()
 
+if(IOS)
+    set(CMAKE_OSX_SYSROOT iphoneos)
+    set(CMAKE_XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}")
+else()
+    set(CMAKE_OSX_SYSROOT iphonesimulator)
+    set(CMAKE_XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}")
+endif()
+
 if(MSVC)
     # 对于MSVC编译器
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/execution-charset:utf-8>")
