@@ -60,7 +60,7 @@ set(SOURCES
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 #生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
 add_library(SCANGO_Dll SHARED ${SOURCES} scango_dll.h)
-file(GENERATE OUTPUT "$<TARGET_BUNDLE_DIR:${FRAMEWORK_NAME}>/Modules/module.modulemap"
+file(GENERATE OUTPUT "$<TARGET_BUNDLE_DIR:SCANGO_Dll>/Modules/module.modulemap"
  CONTENT "framework module \"SCANGO_Dll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
 )
 set_target_properties(SCANGO_Dll PROPERTIES 
@@ -70,7 +70,7 @@ set_target_properties(SCANGO_Dll PROPERTIES
     PUBLIC_HEADER scango_dll.h
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGO_Dll"
     C_STANDARD 99
-    XCODE_ATTRIBUTE_MODULEMAP_FILE "$<TARGET_BUNDLE_DIR:${FRAMEWORK_NAME}>/Modules/module.modulemap"
+    XCODE_ATTRIBUTE_MODULEMAP_FILE "$<TARGET_BUNDLE_DIR:SCANGO_Dll>/Modules/module.modulemap"
 )
 target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
