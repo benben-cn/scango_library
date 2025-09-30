@@ -10,11 +10,9 @@ if(NOT CMAKE_OSX_SYSROOT)
 endif()
 
 if(IOS)
-    set(CMAKE_OSX_SYSROOT iphoneos)
-    set(CMAKE_XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}")
+    set(CONFIG_SDK Release-iphoneos) 
 else()
-    set(CMAKE_OSX_SYSROOT iphonesimulator)
-    set(CMAKE_XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}")
+    set(CONFIG_SDK Release-iphonesimulator)
 endif()
 
 if(MSVC)
@@ -68,7 +66,7 @@ set(SOURCES
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 #生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
 add_library(SCANGO_Dll SHARED ${SOURCES} scango_dll.h)
-file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>-$<SDK>/SCANGO_Dll.framework/Modules/module.modulemap"
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGO_Dll.framework/Modules/module.modulemap"
  CONTENT "framework module \"SCANGO_Dll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
 )
 set_target_properties(SCANGO_Dll PROPERTIES 
@@ -78,7 +76,7 @@ set_target_properties(SCANGO_Dll PROPERTIES
     PUBLIC_HEADER scango_dll.h
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGO_Dll"
     C_STANDARD 99
-    XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>-$<SDK>/SCANGO_Dll.framework/Modules/module.modulemap"
+    XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGO_Dll.framework/Modules/module.modulemap"
 )
 target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
