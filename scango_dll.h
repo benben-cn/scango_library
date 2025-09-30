@@ -11,10 +11,10 @@
 // #endif // DLLH__//如果没有定义DLLH 就定义 DLLH 
 #define SCANGODLL __attribute__((visibility("default")))
 
-using namespace std;
+//using namespace std;
 
 
-#include<vector> 
+//#include<vector> 
 
 typedef unsigned int       DWORD;
 typedef unsigned short      WORD;
@@ -74,7 +74,7 @@ extern SCANGODLL DWORD smartdog_scango_dcframe_BSClient_quit();
 //获取和服务端的状态 0:初始化，等待和网关通讯正常 1:正在登陆 2:通讯正常
 extern SCANGODLL DWORD smartdog_scango_dcframe_BSClient_getServerState();
 //获取设备功能权限
-extern SCANGODLL vector<WORD> smartdog_scango_dcframe_BSClient_getFuncList();
+//extern SCANGODLL vector<WORD> smartdog_scango_dcframe_BSClient_getFuncList();
 //手动发送心跳，通讯正常返回true，通讯错误返回false（可忽略）
 extern SCANGODLL bool smartdog_scango_dcframe_BSClient_sendHeartBeatPacket();
 //发送信息 返回值0：发送成功，modId_I：自定义模块id，infoType_I：信息帧类型，cmd_I：各个模块的命令字定义，marker：json类型存储的信息

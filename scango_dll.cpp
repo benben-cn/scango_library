@@ -136,17 +136,17 @@ DWORD smartdog_scango_dcframe_BSClient_getServerState() {
     return zhw_bs_get_server_state();
 }
 
-vector<WORD> smartdog_scango_dcframe_BSClient_getFuncList() {
-    WORD funcList[128] = {0};
-    WORD length = zhw_bs_get_get_func_list(funcList);
+// vector<WORD> smartdog_scango_dcframe_BSClient_getFuncList() {
+//     WORD funcList[128] = {0};
+//     WORD length = zhw_bs_get_get_func_list(funcList);
 
-    vector<WORD> func_array;
-    for (int i = 0; i < length; i++) {
-        func_array.push_back(funcList[i]);
-    }
+//     vector<WORD> func_array;
+//     for (int i = 0; i < length; i++) {
+//         func_array.push_back(funcList[i]);
+//     }
 
-    return func_array;
-}
+//     return func_array;
+// }
 
 bool smartdog_scango_dcframe_BSClient_sendHeartBeatPacket() {
 
