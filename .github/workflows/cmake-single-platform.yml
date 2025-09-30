@@ -47,6 +47,7 @@ jobs:
     - name: Locate framework
       run: |
         find ${{github.workspace}} -name "*.framework" -type d
+        find ${{github.workspace}} -name "module.modulemap"
 
     - name: Create XCFramework
       run: |
