@@ -9,10 +9,10 @@ if(NOT CMAKE_OSX_SYSROOT)
     set(CMAKE_OSX_SYSROOT ${IOS_DEVICE_SDK})
 endif()
 
-if(IOS)
-    set(CONFIG_SDK Release-iphoneos) 
-else()
+if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator")
     set(CONFIG_SDK Release-iphonesimulator)
+elseif(CMAKE_OSX_SYSROOT MATCHES "iphoneos")
+    set(CONFIG_SDK Release-iphoneos)
 endif()
 
 if(MSVC)
