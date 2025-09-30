@@ -40,7 +40,7 @@ jobs:
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
       #run: cmake -B ${{github.workspace}}/build/os64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=${{ matrix.arch }}
 
     - name: Build
       # Build your program with the given configuration
