@@ -15,6 +15,7 @@
 
 
 //#include<vector> 
+#include <stdbool.h>
 
 typedef unsigned int       DWORD;
 typedef unsigned short      WORD;
@@ -25,6 +26,9 @@ struct qrcode_decrypt_data {
     DWORD random; //产码时生成的随机数
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 //回调函数----------------------------------------------------------------------------------------
 //退出登入
 typedef void (*onLogout)();
@@ -84,8 +88,10 @@ extern SCANGODLL DWORD smartdog_scango_dcframe_BSClient_sendRawMessage(WORD modI
 //将任意长度的随机码转换为4位随机码
 extern SCANGODLL DWORD smartdog_scango_qrcode_security_ZheDaoRandomCodeTool_convertRandomIdNew(DWORD randomId);
 //8位一物一码解码
-extern SCANGODLL qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode);
-
+extern SCANGODLL struct qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode);
+#ifdef __cplusplus
+}
+#endif
 
 /****************************************************************
 *文件范围 : 各个模块的命令字定义，便于收发方对照解析

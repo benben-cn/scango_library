@@ -586,7 +586,7 @@ ULONGLONG dcf_tools_to_10(const char* srcx) {
     return dst;
 }
 
-qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode) {
+struct qrcode_decrypt_data smartdog_scango_qrcode_ZheDaoQRCodeTool_nativeParseGoodsQRCodeNew(const char* fullQRCode) {
         //新的解码规则
         // 3.base64解码
     BYTE decode[8] = { 0 };
