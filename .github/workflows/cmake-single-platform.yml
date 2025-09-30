@@ -26,7 +26,7 @@ jobs:
     
     strategy:
       matrix:
-        arch: [x86_64, arm64]
+        arch: [SIMULATOR64, OS64]
         
     steps:
     - uses: actions/checkout@v4
@@ -55,8 +55,8 @@ jobs:
       if: matrix.arch == 'arm64'
       run: |
         xcodebuild -create-xcframework \
-          -framework build-x86_64/Release/SCANGO_Dll.framework \
-          -framework build-arm64/Release/SCANGO_Dll.framework \
+          -framework build-SIMULATOR64/Release/SCANGO_Dll.framework \
+          -framework build-OS64/Release/SCANGO_Dll.framework \
           -output output/SCANGO_Dll.xcframework
 
     - name: Test
