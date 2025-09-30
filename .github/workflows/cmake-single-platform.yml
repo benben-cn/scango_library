@@ -40,27 +40,22 @@ jobs:
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
       #run: cmake -B ${{github.workspace}}/build/os64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=${{ matrix.arch }}
+      run: cmake -B ${{github.workspace}}/build-${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=${{ matrix.arch }}
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-    - name: Clean between architectures  
-      run: |
-        rm -rf build/*
-        make clean
+      run: cmake --build ${{github.workspace}}/build-${{ matrix.arch }} --config ${{env.BUILD_TYPE}}
 
     - name: Create XCFramework
-      if: matrix.arch == 'arm64'
+      if: matrix.arch == 'OS64'
       run: |
         xcodebuild -create-xcframework \
-          -framework build-SIMULATOR64/Release/SCANGO_Dll.framework \
-          -framework build-OS64/Release/SCANGO_Dll.framework \
-          -output output/SCANGO_Dll.xcframework
+          -framework ${{github.workspace}}/build-SIMULATOR64/Release/SCANGO_Dll.framework \
+          -framework ${{github.workspace}}/build-OS64/Release/SCANGO_Dll.framework \
+          -output ${{github.workspace}}/output/SCANGO_Dll.xcframework
 
     - name: Test
-      working-directory: ${{github.workspace}}/build/os64
+      working-directory: ${{github.workspace}}/build-${{ matrix.arch }}
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
