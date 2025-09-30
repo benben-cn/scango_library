@@ -23,20 +23,41 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     #runs-on: ubuntu-latest
     runs-on: macos-latest
-
+    
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+        
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set up toolchain
+      run: |
+        brew install cmake
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       #run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
-      run: cmake -B ${{github.workspace}}/build/os64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
+      #run: cmake -B ${{github.workspace}}/build/os64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build/os64 --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Clean between architectures  
+      run: |
+        rm -rf build/*
+        make clean
+
+    - name: Create XCFramework
+      if: matrix.arch == 'arm64'
+      run: |
+        xcodebuild -create-xcframework \
+          -framework build-x86_64/Release/SCANGO_Dll.framework \
+          -framework build-arm64/Release/SCANGO_Dll.framework \
+          -output output/SCANGO_Dll.xcframework
 
     - name: Test
       working-directory: ${{github.workspace}}/build/os64
