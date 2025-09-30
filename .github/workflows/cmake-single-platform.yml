@@ -65,12 +65,16 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
 
-    - name: Create XCFramework
+    # - name: Create XCFramework
+    #   run: |
+    #     xcodebuild -create-xcframework \
+    #       -framework ${{github.workspace}}/build-SIMULATOR64/Release-iphonesimulator \
+    #       -framework ${{github.workspace}}/build-OS64/Release-iphoneos \
+    #       -output ${{github.workspace}}/output/SCANGO_Dll.xcframework
+
+    - name: Locate framework
       run: |
-        xcodebuild -create-xcframework \
-          -framework ${{github.workspace}}/build-SIMULATOR64/Release-iphonesimulator \
-          -framework ${{github.workspace}}/build-OS64/Release-iphoneos \
-          -output ${{github.workspace}}/output/SCANGO_Dll.xcframework
+        find ${{github.workspace}} -name "*.framework" -type d
       
     - name: Zip artifact
       run: |
