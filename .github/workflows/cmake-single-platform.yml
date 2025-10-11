@@ -52,9 +52,9 @@ jobs:
     - name: Create XCFramework
       run: |
         xcodebuild -create-xcframework \
-          -framework ${{github.workspace}}/build-SIMULATOR64/Release-iphonesimulator/SCANGO_Dll.framework \
-          -framework ${{github.workspace}}/build-OS64/Release-iphoneos/SCANGO_Dll.framework \
-          -output ${{github.workspace}}/output/SCANGO_Dll.xcframework
+          -framework ${{github.workspace}}/build-SIMULATOR64/Release-iphonesimulator/SCANGODll.framework \
+          -framework ${{github.workspace}}/build-OS64/Release-iphoneos/SCANGODll.framework \
+          -output ${{github.workspace}}/output/SCANGODll.xcframework
       
     - name: Zip artifact
       run: |
