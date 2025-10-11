@@ -65,20 +65,22 @@ set(SOURCES
 #set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 #生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
-add_library(SCANGO_Dll SHARED ${SOURCES} scango_dll.h)
-file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGO_Dll.framework/Modules/module.modulemap"
- CONTENT "framework module \"SCANGO_Dll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
+add_library(SCANGODll SHARED ${SOURCES} scango_dll.h)
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
+ CONTENT "framework module \"SCANGODll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
 )
-set_target_properties(SCANGO_Dll PROPERTIES 
+set_target_properties(SCANGODll PROPERTIES 
     FRAMEWORK TRUE
     FRAMEWORK_VERSION A
-    MACOSX_FRAMEWORK_IDENTIFIER com.example.SCANGO_Dll
+    MACOSX_FRAMEWORK_IDENTIFIER com.example.SCANGODll
     PUBLIC_HEADER scango_dll.h
-    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGO_Dll"
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.0"  # CFBundleShortVersionString
+    MACOSX_BUNDLE_BUNDLE_VERSION "1"            # CFBundleVersion
+    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGODll"
     C_STANDARD 99
-    XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGO_Dll.framework/Modules/module.modulemap"
+    XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
 )
-target_compile_definitions(SCANGO_Dll PUBLIC IS_BUILDING_SHARED)
+target_compile_definitions(SCANGODll PUBLIC IS_BUILDING_SHARED)
 message(STATUS "Building shared version...")
 
 find_package(ZLIB REQUIRED)
@@ -86,6 +88,6 @@ find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
 # 链接到 DLL 的导入库
-target_link_libraries(SCANGO_Dll PRIVATE ${ZLIB_LIBRARIES})
+target_link_libraries(SCANGODll PRIVATE ${ZLIB_LIBRARIES})
 
 
