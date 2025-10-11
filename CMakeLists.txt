@@ -66,9 +66,9 @@ set(SOURCES
 #link_directories(${PROJECT_SOURCE_DIR}/lib)
 #生成FRAMEWORK格式的动态库，并且把公共头文件scango_dll.h放入Headers文件夹下
 add_library(SCANGODll SHARED ${SOURCES} scango_dll.h)
-#file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
-# CONTENT "framework module \"SCANGODll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
-#)
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
+ CONTENT "framework module \"SCANGODll\" {\n header \"scango_dll.h\"\n link \"z\"\n export *\n}"
+)
 set_target_properties(SCANGODll PROPERTIES 
     FRAMEWORK TRUE
     FRAMEWORK_VERSION A
@@ -78,10 +78,9 @@ set_target_properties(SCANGODll PROPERTIES
     MACOSX_FRAMEWORK_BUNDLE_VERSION "1"            # CFBundleVersion
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.example.SCANGODll"
     C_STANDARD 99
-    #XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
+    XCODE_ATTRIBUTE_MODULEMAP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_SDK}/SCANGODll.framework/Modules/module.modulemap"
 )
 target_compile_definitions(SCANGODll PUBLIC IS_BUILDING_SHARED)
-target_compile_definitions(SCANGODll PRIVATE DEFINES_MODULE=1)
 message(STATUS "Building shared version...")
 
 find_package(ZLIB REQUIRED)
