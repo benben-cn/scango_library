@@ -15,7 +15,8 @@
  */
 
 #include <pthread.h>
-#include <semaphore.h>
+//#include <semaphore.h>
+#include <dispatch/dispatch.h>
 
 struct loopermessage;
 
@@ -37,7 +38,9 @@ class looper {
         void loop();
         loopermessage *head;
         pthread_t worker;
-        sem_t headwriteprotect;
-        sem_t headdataavailable;
+        //sem_t headwriteprotect;
+        //sem_t headdataavailable;
+        dispatch_semaphore_t headwriteprotect;
+        dispatch_semaphore_t headdataavailable;
         bool running;
 };

@@ -17,7 +17,7 @@
 #include "looper.h"
 
 #include <assert.h>
-#include <pthread.h>
+//#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -26,7 +26,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <limits.h>
-#include <semaphore.h>
+//#include <semaphore.h>
 
 #include "extern_api.h"
 // for __android_log_print(ANDROID_LOG_INFO, "YourApp", "formatted message");
@@ -53,8 +53,10 @@ void* looper::trampoline(void* p) {
 }
 
 looper::looper() {
-    sem_init(&headdataavailable, 0, 0);
-    sem_init(&headwriteprotect, 0, 1);
+    //sem_init(&headdataavailable, 0, 0);
+    //sem_init(&headwriteprotect, 0, 1);
+    headdataavailable = dispatch_semaphore_create(0);
+    headwriteprotect = dispatch_semaphore_create(1);
     pthread_attr_t attr;
     pthread_attr_init(&attr);
 
@@ -81,7 +83,8 @@ void looper::post(int what, void *data, bool flush) {
 }
 
 void looper::addmsg(loopermessage *msg, bool flush) {
-    sem_wait(&headwriteprotect);
+    //sem_wait(&headwriteprotect);
+    dispatch_semaphore_wait(headwriteprotect, DISPATCH_TIME_FOREVER);
     loopermessage *h = head;
 
     if (flush) {
@@ -102,26 +105,32 @@ void looper::addmsg(loopermessage *msg, bool flush) {
     }
     dcf_output("looper:post msg %d\r\n", msg->what);
     //LOGV("post msg %d", msg->what);
-    sem_post(&headwriteprotect);
-    sem_post(&headdataavailable);
+    //sem_post(&headwriteprotect);
+    //sem_post(&headdataavailable);
+    dispatch_semaphore_signal(headwriteprotect);
+    dispatch_semaphore_signal(headdataavailable);
 }
 
 void looper::loop() {
     while(true) {
         // wait for available message
-        sem_wait(&headdataavailable);
+        //sem_wait(&headdataavailable);
+        dispatch_semaphore_wait(headdataavailable, DISPATCH_TIME_FOREVER);
 
         // get next available message
-        sem_wait(&headwriteprotect);
+        //sem_wait(&headwriteprotect);
+        dispatch_semaphore_wait(headwriteprotect, DISPATCH_TIME_FOREVER);
         loopermessage *msg = head;
         if (msg == NULL) {
             dcf_output("looper:no msg\r\n");
             //LOGV("no msg");
-            sem_post(&headwriteprotect);
+            //sem_post(&headwriteprotect);
+            dispatch_semaphore_signal(headwriteprotect);
             continue;
         }
         head = msg->next;
-        sem_post(&headwriteprotect);
+        //sem_post(&headwriteprotect);
+        dispatch_semaphore_signal(headwriteprotect);
 
         if (msg->quit) {
             dcf_output("looper:quitting\r\n");
@@ -147,8 +156,8 @@ void looper::quit() {
     addmsg(msg, false);
     void *retval;
     pthread_join(worker, &retval);//到这直接结束了，后面不执行
-    sem_destroy(&headdataavailable);
-    sem_destroy(&headwriteprotect);
+    //sem_destroy(&headdataavailable);
+    //sem_destroy(&headwriteprotect);
     running = false;
 
 }
